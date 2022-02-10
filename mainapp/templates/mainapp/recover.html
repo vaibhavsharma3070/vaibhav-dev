@@ -1,0 +1,59 @@
+{% extends 'mainapp/header.html' %}
+{% load static %}
+{% block TITLE %} Recover Password {% endblock %}
+{% block content %}
+<main id="contentArea" class="rsp-container">
+      
+        <div id="madvertise_cmp_statistics" data-url="/track/madvertise_cmp" style="display:none"></div>
+
+
+      <div class="main-content util-clearfix">
+        <div class="main-column util-clearfix">
+          
+
+
+<form id="sessionNewForm" class="loginForm" data-action="FormXHRSubmit"  accept-charset="UTF-8" method="post">
+
+  {% csrf_token %}
+  <div class="simpleFormHeading rsp-gte-tablet">
+    <h1>Password Recovery</h1>
+    <p>Don’t have an account yet? <a href="{% url 'signup' %}">Sign up</a></p>
+</div>
+  <div class="inputFormBox">
+    <h3 class="simpleFormLabel">email</h3>
+    <div class="inputFormPadding">
+      <input type="text" name="email" class="inputForm" maxlength="40" placeholder="e-mail" autocomplete="email" autofocus="autofocus" data-input="CaptchaReload">
+    </div>
+    
+  </div>
+
+
+  <div class="simpleFormItem">
+    <input type="submit" class="btn-primary-wide" value="Proceed">
+    
+  </div>
+</form>
+<div class="">
+    <p><b>We will send you reset password.Check your junk or spam folders for a message coming from success@gmail.com</b></p>  
+</div>
+
+</div>            
+    
+
+</div>
+</main>
+
+{% endblock %}
+
+
+
+{% block LINK %}
+<link rel="stylesheet" href={% static "mainapp/css/cdnjs.css" %}> 
+<link rel="stylesheet" href={% static "mainapp/css/stackpath.css" %} > 
+<link rel="stylesheet" href={% static "mainapp/css/login.css" %}>
+<link rel="stylesheet" href={% static "mainapp/css/main.css" %}> 
+ {% endblock %}
+
+ {% block CSS %} 
+ 
+ {% endblock %}

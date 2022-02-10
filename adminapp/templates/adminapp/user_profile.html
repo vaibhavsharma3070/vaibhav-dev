@@ -1,0 +1,224 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Add User {% endblock %}
+{% block content %}
+<br>
+
+    <div class="card" style="width:100%;background:#efede1;border-bottom: 1px solid red;
+    box-shadow: 0 1px 6px #080808;">   
+        <div class="img_dev">
+            <div class="profile_img" ></div>  
+        </div>
+           
+        <!---->  
+        <div class="detail" style="background: white;">      
+            <div class="card-body" style=" margin-left: 300px;margin-right: 150px;">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'edit_user' email=record.email %}" class="float-right" style="color:black">   
+                        <span class="material-icons">&#xe254;</span>
+                    </a>
+                {% endif %}
+                    <h5 class="card-title">{{record.name}}</h5>
+                    <table class="table">
+                    <tr><td><b>BirthDate</b></td><td>{{record.birthday}}</td><td><b>Email</b></td><td>{{record.email}}</td></tr>
+                    <tr><td><b>Spacilist</b></td><td><div class="tags-input"><span class="tag">{{record.spacialist}}</span></div></td><td><b>currentwork</b></td><td>{{record.currentwork}}</td></tr>
+                    <tr><td><b>Company</b></td><td>{{record.company}}</td><td></td><td></td></tr>
+                    </table>
+                    <div class="form-group">
+                        <label for="exampleFormControlFile1"><b>Resume </b></label>
+                        {% if FileRecord.doc %}            
+                        <a href="/media/{{FileRecord.doc }}" target="_blank">{{FileRecord.doc}}</a>       
+                        {% endif %}
+                    </div> 
+            </div>
+        </div>
+    </div>
+    <br>
+    <div style="display: flex;">
+                <div class="" style ="border-left: 5px solid red;height: 50px;width:20px"><!--<i class="right"></i>--></div>
+                <div style="font-size: 30px;"> Description of {{record.name}}</div>
+    </div>
+    <br>
+    <div class="card" style="border-bottom: 1px solid red;box-shadow: 0 1px 6px #080808;">
+        <div class="header">
+            <div class="card-title"><h5 ></h5></div>
+        </div>
+        <div class="card-body">
+            {{record.short_description}}
+        </div>
+    </div>
+    <br>
+    <!--Our projects-->
+            <div style="display: flex; margin-bottom:10px">
+            <div class="" style="border-left: 6px solid red;height: 90px;/* width:20px */"></div>
+                <div>
+                    <div style="font-size: 15px;margin-left: 10px;">Work Involved In</div>
+                    <i class="right"></i>
+                    <div style="font-size: 30px;margin-left: 10px;">About My Work</div>
+                </div>
+            </div>
+            
+             <!--Projects start-->
+			<div class="owl-buttons">
+				<div class="row" >
+					<div class="owl-prev">Previous</div>
+					<div class="owl-next">Next</div>
+				</div>
+				<br>
+			</div>
+            <div id="carouselExampleControls1" class="carousel slide secondCarousel" data-ride="carousel">
+                <div class="carousel-inner">
+                  {% load custom_tags %}
+                  {% for n in external_loop%} <!--External Loop-->                   
+                  {% if n == 0 %}                                  
+                    <div class="carousel-item active" > <!--each page-->
+                  {% else %}
+                     <div class="carousel-item" > <!--each page-->
+                  {% endif %}
+                        <div class="row" style="margin-left: 5px;margin-right:5px;">
+                            {% for i in internal_loop %} <!-- Internal Loop-->
+                            {% load mathfilters %}
+                                {% with counter1=forloop.parentloop.counter|countProjectCarousel:forloop.counter %}
+                                    {% if counter1 <= projects.count %} 
+                                        {% with p=projects|getRecord:counter1 %}
+                                        <div class="px-md-1" style="width:20%;height: 500px;cursor: pointer;"> <!--It will repeat twice-->
+                                            <div class="card project-card" style=" border:dashed;border-color:#696969;height: 34rem;overflow: hidden;height: 100%;" target="{% url 'ourwork' p.id %}">
+                                                <img class="card-img-top" src="/media/{{ p.Project_file.all.0.file }}" alt="Card
+                                                image cap"  style="min-height: 40%;overflow: hidden;max-height: 40%;">
+                                                <div class="custom-card-body">
+                                                    <h5 class="card-title">{{p.name|slice:":100"}}...</h5>
+                                                    <p class="card-text">{{p.description|slice:":150"}}...</p>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endwith %} 
+                                    {% endif %}
+                                {% endwith %}
+                            {% endfor %}      <!-- Internal Loop-->                                                
+                        </div>
+                    </div> <!--end each-->
+                {% endfor %}                       
+                </div>
+                
+                <br>
+            </div><!-- end Our Project-->
+
+    <!--Project End-->
+    {% include "adminapp/footer.html" %}
+
+{% endblock %}
+{% block CSSLINK %}
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>   
+{% endblock %}
+
+{% block SCRIPTLINK %}
+
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+{% endblock %}
+
+ {% block SCRIPT %}
+
+$('.owl-prev').click(function() {
+$('.secondCarousel').carousel('prev');
+});
+
+$('.owl-next').click(function() {
+$('.secondCarousel').carousel('next');
+});
+
+$(window).on("load",function(){
+$('.secondCarousel').carousel('pause');
+
+/** click on Project Card */ 
+$(".project-card").on('click',function(e){
+    let target = $(this).attr('target');    
+    location.href = target;
+});
+
+});
+  {% endblock %}
+  {% block CSS %}
+  <style>
+  .custom-card-body{
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 1.25rem;
+    height: 200px;
+   }
+  .owl-buttons {
+    right: 15px;
+    top: -72px;
+    margin-left: 95%;
+}
+  .owl-prev {
+    background: url({% static 'mainapp/img/arrow-left.png' %}) no-repeat left top;
+    font-size: 0;
+    height: 36px;
+    width: 36px;
+    margin-left: 1%;
+    margin-right: 3%;
+}
+.owl-next {
+    background: url({% static 'mainapp/img/arrow-right.png' %}) no-repeat left top;
+    font-size: 0;
+    height: 36px;
+    width: 36px;
+    margin-left: 1%;
+}
+  .profile_img{
+    border-radius: 50%;
+    border: 1px solid rgba(183, 178, 178, 0.5);
+    width: 200px;
+    height: 200px;
+    background: url("/media/{{FileRecord.img}}") no-repeat center;
+    background-size: 110% 100%;
+		}
+.img_dev {
+    width: 200px;
+    z-index: 999;
+    height: 200px;
+    position: relative;
+    top: 100px;
+    left: 50px;
+    
+    
+    /* border-radius: 50%; */
+    /* border: 5px solid rgba(255,255,255,0.5); */
+}
+hr.img_hr {
+    position: relative;
+    /*top: -110px;*/
+    size: bold;
+    
+    border-color:rgba(0,0,0,.125);
+}
+
+.profile_img:hover::after {
+  /*  position: absolute;
+    bottom: 0;
+    background: rgb(0, 0, 0);
+    background: rgba(0, 0, 0, 0.3);
+    color: #f1f1f1;
+    width: 200px;
+    height: 100px;
+    padding: 20px;
+    text-align: center;
+    border-bottom-left-radius: 110px;
+    border-bottom-right-radius: 110px;
+    content: "Upload"; */
+} 
+
+
+</style>
+  {% endblock %}

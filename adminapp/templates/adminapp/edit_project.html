@@ -1,0 +1,278 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Edit Project {% endblock %}
+{% block content %}
+<br>
+ 
+<form method="POST" enctype="multipart/form-data" id="Edit_Project" action="#" accept-charset="UTF-8" method="post" autocomplete="off">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ project_form.name.label_tag }}
+        {{ project_form.name }}
+        {{ project_form.name.errors }}
+      </div>  
+    <div class="form-group">
+        {{ project_form.owner.label_tag }}
+        {{ project_form.owner }}
+        {{ project_form.owner.errors }}
+      </div> 
+     <div class="form-group">
+        {{ project_form.project_url.label_tag }}
+        {{ project_form.project_url }}
+        {{ project_form.project_url.errors }}
+      </div>  
+      <div class="form-group">
+        {{ project_form.release_date.label_tag }}
+        {{ project_form.release_date }}
+        {{ project_form.release_date.errors }}
+      </div> 
+      {% comment %} Assignee assignee {% endcomment %}
+      <div class="form-group">
+        <label for="users_availbale_for_assignee" >Add Assignee</label>
+        <input type="hidden" value="{{assignees_string}}" id="id_assignees" name="assignees">
+        <select id="users_availbale_for_assignee" class="form-control">
+          <option disabled selected value> -- select Assignee -- </option>
+          {% for u in users_for_assignmnets%}
+              <option value='{{u}}' id='{{u.id}}'>{{u}}</option>
+          {% endfor %}
+        </select>
+        <div id="selected_assignees" class="tags-assigee">
+               {% for u in assignees %}
+                <span class="tag" id="{{u.assigned_person.id}}">{{u.assigned_person}}<span class="remove_assignee"></span></span>
+               {% endfor %}
+        </div>
+      </div>
+    <div class="form-group">
+        {{ project_form.main_major.label_tag }}
+        {% comment %} {{ project_form.main_major }} {% endcomment %}
+        <div class="tags-input form-control" data-name="tags-input" val='{{project_form.main_major.value }}' init_value="game" hiden_input_name='main_major' hidden_input_id='id_main_major'>
+        {{ project_form.main_major.errors }}
+      </div> 
+    <div class="form-group">
+        {{ project_form.tags_of_used_technology.label_tag }}
+        {% comment %} {{ project_form.tags_of_used_technology }} {% endcomment %}
+        <div class="tags-input form-control" data-name="tags-input" val='{{ project_form.tags_of_used_technology.value }}' init_value="Java" hiden_input_name='tags_of_used_technology' hidden_input_id='id_tags_of_used_technology'>
+        {{ project_form.tags_of_used_technology.errors }}
+      </div>
+    
+    <div class="form-group">
+        <label for="project_reference">Estimated Time</label>
+        <input type="hidden" value='{{project_form.estimated_time.value}}' id="id_estimated_time" name="estimated_time">
+        <table >
+            <tbody>
+              <tr >
+                <td >
+                  <select id="id_number_of_day" name="number_of_day" class="form-control" >
+                    <option value="">Day</option>
+                     <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                  </select>
+
+                </td>
+                <td >
+                  <select id="id_number_of_month" name="number_of_month" class="form-control">
+                    <option value="">Month</option>
+                     <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                  </select>
+
+                </td>
+                <td class="rightSideCellFill">
+                  <select id="id_number_of_year" name="number_of_year" class="form-control">
+                    <option value="">Year</option>
+                     <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>                    
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+    <div class="form-group">
+        {{ project_form.progress.label_tag }}
+         {{ project_form.progress }}
+         {{ project_form.progress.errors }}
+    </div>
+    <div class="form-group">
+        {{ project_form.similar_project.label_tag }}
+         {{ project_form.similar_project }}
+         {{ project_form.similar_project.errors }}
+    </div>
+    <div class="form-group">
+        <label for="project_name">Current Cost</label>
+        <input type="number" class="form-control" id="current_cost" name="current_cost" aria-describedby="current cost" placeholder="0">      
+    </div>  
+    <div class="form-group">
+      {{ project_form.short_description.label_tag }}
+      {{ project_form.short_description }}
+      {{ project_form.short_description.errors }}
+  </div>
+  <div class="form-group">
+      {{ project_form.description.label_tag }}
+      {{ project_form.description }}
+      {{ project_form.description.errors }}
+  </div> 
+    <button type="submit" id="submit" class="btn btn-danger">Save</button>
+  </form>
+  
+<br>
+{% include "adminapp/footer.html" %}
+
+{% endblock %}
+
+
+
+
+
+
+{% block CSSLINK %}  
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}> 
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>  
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+{% endblock %}
+
+{% block SCRIPTLINK %}
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/input_tags/tags.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+
+
+{% endblock %}
+
+{% block SCRIPT %}
+ // Start........DOB date picker    
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2012",
+      
+    });
+    // End........DOB date picker 
+//Update Estimate time on Load
+var estimated_time_array = '{{project_form.estimated_time.value}}'.split("-");
+if(estimated_time_array.length > 0)
+{
+    $("#id_number_of_day").val(estimated_time_array[0]);
+    $("#id_number_of_month").val(estimated_time_array[1]);
+    $("#id_number_of_year").val(estimated_time_array[2]);
+}
+ 
+
+ //Assignee selected
+  var selected_users = []; //array of assigned users
+  function populateAssigneeArray(){
+    selected_users = [];
+     $("#selected_assignees > span").each(function( index ) {
+       debugger;
+          selected_users.push($( this ).attr("id") );
+          });
+  }
+$("#users_availbale_for_assignee" ).change(function () 
+    {
+      let selected_option = $( "#users_availbale_for_assignee" ).val();
+      let id  = $("#users_availbale_for_assignee option:selected").attr('id');
+      console.log(id);
+      let html=`<span class="tag" id="${id}">${selected_option}<span class="remove_assignee"></span></span>`;
+      // if user is not in select assignee array
+      populateAssigneeArray();
+      if ( $.inArray(id, selected_users) < 0 ) 
+        {
+          $("#selected_assignees").append(html);
+          
+        }
+    });
+    //Close button on selected assignees -id_assignees 
+    $("#selected_assignees").on("click","span.remove_assignee",function (el) {
+        item_to_be_removed =$(this).parent().attr("id");  
+        $(this).parent().remove(); 
+    });
+
+    const estimate_time_validation =(el) =>{
+          let days = $("#id_number_of_day").val();
+          if (days =="")days =0;
+          let months = $("#id_number_of_month").val();
+          if (months =="")months =0;
+          let years = $("#id_number_of_year").val();
+          if (years =="")years =0; 
+          let estimate_tm_string  = days+"-"+months+"-"+years ;  
+          console.log(estimate_tm_string);     
+          if (estimate_tm_string== "0-0-0"){
+            el.preventDefault();
+            alert("Please update estimate time.")
+          }else{
+            $("#id_estimated_time").val(estimate_tm_string);
+            
+          }
+    }
+
+    $("#submit").on("click",function (el) { 
+       estimate_time_validation(el);  
+       populateAssigneeArray();
+       $("#id_assignees").val(selected_users.toString());        
+       
+    });
+
+{% endblock %}
+
+{% block CSS %}
+<style>
+
+
+.remove_assignee::after {
+    content: '×';
+    font-weight: bold;
+    display: inline-block;
+    transform: scale(1.4);
+    margin-left: 0.75em;
+    z-index:999;
+}
+</style>
+{% endblock %}

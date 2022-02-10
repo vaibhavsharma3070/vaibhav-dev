@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'ProximaNova';
+    src: url(../fonts/Proxima_Nova_Font.otf);
+    font-weight: normal;
+}
+
+
+.simpleFormLabel {
+    font-family: 'ProximaNova';
+    font-size: 28px;
+    color: green;
+}

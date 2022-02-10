@@ -1,0 +1,247 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Edit User {% endblock %}
+{% block content %}
+<br>
+<form method="POST" enctype="multipart/form-data" id="Edit_User" action="#" accept-charset="UTF-8" method="post" autocomplete="off">
+{% csrf_token %}
+  <div class="row">
+    <div class="col-sm-6">
+      <!-- first column -->
+      <div class="form-group">
+        {{ userForm.name.label_tag }}
+        {{ userForm.name }}
+         {{ userForm.name.errors }}
+      </div>
+      {% if user.is_admin %}
+      <div class="form-group">
+      {{ userForm.type.label_tag }}
+      {{ userForm.type }}
+      {{ userForm.type.errors }}
+      </div>
+      {% endif %}
+      <div class="form-group">
+        {{ userForm.spacialist.label_tag }}
+        {{ userForm.spacialist }}
+        {{ userForm.spacialist.errors }}
+      </div>
+      <div class="form-group">
+         {{ userForm.currentwork.label_tag }}
+         {{ userForm.currentwork }}
+         {{ userForm.currentwork.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.company.label_tag }}
+         {{ userForm.company }}
+         {{ userForm.company.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.email.label_tag }}
+        <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        {% comment %} <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username"> {% endcomment %}
+        {{ userForm.email }}
+      </div>
+         
+         {{ userForm.email.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.phone.label_tag }}
+        <br>
+         {{ userForm.Country }}
+         {{ userForm.phone }}
+         {{ userForm.phone.errors }}
+          {{ userForm.Country.errors }}
+      </div>
+      {% comment %} <div class="form-group">
+        {{ userForm.Country.label_tag }}
+         {{ userForm.Country }}
+         {{ userForm.Country.errors }}
+      </div> {% endcomment %}
+      <div class="form-group">
+        <label for="exampleFormControlFile1">Resume</label>
+        {% if userFileForm.doc %}
+        <br>
+        <a href="/media/{{userFileForm.doc.value }}" target="_blank">{{userFileForm.doc.value }}</a>       
+        {% endif %}
+        <br>
+        <div class="upload-btn-wrapper">
+            <button class="btn" style="background: #dc3545;color: white;">Upload Resume</button>
+            {{ userFileForm.doc }}
+          </div>        
+      </div>
+
+    </div>
+    <div class="col-sm-6">
+      <!-- second column -->
+       
+      {% if user.is_admin %}
+      <fieldset class="border p-2 mb-2">
+        <legend class="w-auto" style="font-size: 15px;">Admin</legend>
+        <div class="form-group">
+          <table >
+            <tr>
+              <td>{{ userForm.is_admin.label_tag }} </td><td style="padding: .75rem;">{{ userForm.is_admin }}</td>
+              <td>{{ userForm.is_active.label_tag }} </td><td style="padding: .75rem;">{{ userForm.is_active }}</td>
+            </tr>        
+          </table>
+        </div>
+        </fieldset>
+      {% endif %}        
+      <div class="form-group">
+       {{ userForm.state.label_tag }}<br>
+        {% for radio in userForm.state %}
+          <label for="{{ radio.id_for_label }}" class="mr-md-5">       
+            <span class="radio">{{ radio.tag }}</span>
+            {{ radio.choice_label }}
+          </label>
+        {% endfor %}      
+      </div>
+      
+      <div class="form-group">
+         {{ userForm.gender.label_tag }}<br>
+        {% for radio in userForm.gender %}
+        <label for="{{ radio.id_for_label }}" class="mr-md-5">       
+        <span class="radio">{{ radio.tag }}</span>
+         {{ radio.choice_label }}
+        </label>
+        {% endfor %} 
+      </div>
+       <div class="form-group">
+         {{ userForm.birthday.label_tag }}
+         {{ userForm.birthday }}
+         {{ userForm.birthday.error }}          
+        </div>
+        <br>
+        {% if userFileForm.img %}
+        <img src="/media/{{userFileForm.img.value }}" class="personalImg" alt="img" width="200px" height="200px" style="width: 100%;" id="client_image"> <br>
+        <a href="/media/{{userFileForm.img.value }}" target="_blank" >{{userFileForm.img.value }}</a>
+        <p id="large"></p>       
+        {% endif %}
+        <div class="form-group">
+         {% comment %} {{ userFileForm.img.label_tag }} <br>       {% endcomment %}
+          <div class="upload-btn-wrapper">
+            <button class="btn" style="background: #dc3545;color: white;">Upload Image</button>
+            {{ userFileForm.img }}
+          </div>
+         {{ userFileForm.img.error }}
+        </div>
+       
+       
+       
+      
+    </div><!--End of Second Column-->
+    <div class="col-sm-12">
+      <div style="display: flex;">
+        <div class="" style ="border-left: 5px solid red;height: 50px;width:20px"><!--<i class="right"></i>--></div>
+        <div style="font-size: 30px;"> Description</div>
+      </div>
+      <br>
+      <div class="form-group">
+          {% comment %} {{ userForm.short_description.label_tag }} {% endcomment %}
+          {{ userForm.short_description }}
+          {{ userForm.short_description.errors  }}
+      </div>
+      <div style="width:100%">
+        <button type="submit" class="btn btn-danger float-right" style="width: 100px;padding: 5px;">Save</button>
+      </div>   
+    </div> 
+  </div> <!--End of row-->
+
+</form>
+{% include "adminapp/footer.html" %}
+
+{% endblock %}
+{% block CSSLINK %}
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+{% endblock %}
+
+{% block SCRIPTLINK %}
+
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+{% endblock %}
+
+ {% block SCRIPT %} 
+
+    // Start........DOB date picker    
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2012",
+      
+    });
+    // End........DOB date picker 
+    // Start .......BackGround fed on Imag Click
+    jQuery.fn.center = function () 
+    {
+      this.css("position","absolute");
+      this.css("top", "5%");
+      this.css("right","15%");
+      return this;
+	  }
+    $('.personalImg').click(function(e){		
+			$(".container-fluid").css({"opacity" : "0.8"})
+							.fadeIn("slow");					
+			$("#large").html("<img height='400px' width='400px' src='"+$(this).attr("src")+"' alt='"+$(this).attr("alt")+"' /><br/>")
+             .center()
+					   .fadeIn("slow");	
+			return false;
+		});
+    $(".container-fluid").click(function(){
+			$(".container-fluid").css({"opacity" : "1"})
+							.fadeIn("slow");					
+			$("#large").fadeOut("slow");
+		});
+		
+		$("#large").click(function(){
+			//$(".container-fluid").fadeOut("slow");
+			$("#large").fadeOut("slow");
+		});
+    // End .......BackGround fed on Imag Click   
+    // Start....Form Validation
+
+    /** Upload Image */
+    $('#id_img').change(function (e) {
+    $('#client_image').attr('src', window.URL.createObjectURL(this.files[0]));
+
+    });
+
+  {% endblock %}
+
+  {% block CSS %}
+  <style>
+  #large {
+	display: none;
+	position: absolute;		
+	background: #FFFFFF;	
+	padding: 5px;
+	z-index: 10;
+	min-height: 200px;
+	min-width: 200px;
+	color: #336699;
+}
+textarea#id_short_description {
+    border-bottom: 1px solid red;
+    box-shadow: 0 1px 6px #080808;
+}
+
+
+
+img[src=""] {
+    display: none;
+}
+</style>
+  {% endblock %}
+

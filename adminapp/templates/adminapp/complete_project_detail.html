@@ -1,0 +1,238 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Project Queues {% endblock %}
+{% block content %}
+
+<br>
+<!--Card of Non Admin User-->
+<div class="card d-block w-100" >      
+      <div class="card-body border m-2"> 
+        <div class="row"  >
+              <div class="col-4">              
+                   <!--Start Image Box-->               
+                    <div class="row text-center text-lg-left"  style="max-height:500px;">
+                      {% for i in projrct_file %}
+                      {% if i.type == 'image' %}     
+                      <div class="col-6 ">
+                        <a href="/media/{{i.file }}" class="d-block mb-4 h-100" target="_blank">
+                        <img class="img-fluid img-thumbnail" src="/media/{{i.file }}" alt="" height="200px" width="200px">
+                        </a>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                      
+                    </div> 
+              </div>
+              <div class="col-8">
+                <div class="row">
+                  <div class="col px-md-12">
+                      <table class="table">
+                          <tr><td><b>Project Name</b></td><td>{{project.name}}</td></tr>
+                          <tr><td>Owner</td><td><div class="tags-input"><span class="tag">{{project.owner}}</span></div></td></tr>
+                          <tr><td>Released Date</td><td>{{project.release_date}}</td></tr>
+                          <tr><td>Developer Involved</td><td>
+                            <div id="" class="tags-input">
+                            {% for u in assignees %}
+                            <span class="tag" id="{{u.assigned_person.id}}">{{u.assigned_person}}<span class="remove_assignee"></span></span>
+                            {% endfor %}
+                            </div>
+                          </td></tr>
+                          <tr><td>project URL</td><td><a href="{{project.project_url}}" target="_blank">{{project.project_url}} </a></td></tr> 
+                          <tr><td>Tags Of Used Technology</td><td>
+                          <div class="tags-input">
+                            {% load custom_tags %}
+                            {% with  project.tags_of_used_technology|split:',' as tags %}
+                            {% for tag in tags %}
+                              <span class="tag">{{ tag}}</span>
+                            {% endfor %}
+                            {% endwith %}
+                            </div>
+                          </td></tr>
+                          <tr><td>Development Time</td><td>
+                          {% with  project.estimated_time|split:'-' as tags %}
+                              <b>Years</b> : {{tags.2 }}   <b>Months</b> : {{tags.1 }} <b>Days</b> : {{tags.0 }}                              
+                            {% endwith %}
+                          </td></tr>                     
+                        </table>
+                  </div>
+                                   
+                </div> 
+                
+                             
+              </div>
+
+         </div>  
+           
+      
+    </div> 
+     <br>
+    <div style="display: flex;">
+                <div class="" style ="border-left: 5px solid red;height: 50px;width:20px"><!--<i class="right"></i>--></div>
+                <div style="font-size: 30px;"> Description of Project</div>
+    </div>
+    <br>
+    <div class="card" style="border-bottom: 1px solid red;box-shadow: 0 1px 6px #080808;">
+        <div class="header">
+            <div class="card-title"><h5 ></h5></div>
+        </div>
+        <div class="card-body">
+            {{ project.description}}
+        </div>
+    </div>
+     
+</div>
+{% include "adminapp/footer.html" %}
+{% endblock %}
+{% block CSSLINK %}  
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>  
+<link rel="stylesheet" href={% static "adminapp/richtext/main.css" %}> 
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>    
+{% endblock %}
+
+{% block SCRIPTLINK %}
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/richtext/shieldui-all.min.js" %}></script>
+
+{% endblock %}
+
+{% block CSS %}
+ <style>   
+.upload-options { 
+    cursor: pointer;
+    overflow: hidden;
+    text-align: center;
+    -webkit-transition: background-color ease-in-out 150ms;
+    transition: background-color ease-in-out 150ms;
+        min-height: 100px;
+}
+.upload-options input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.upload-file-options input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+  display:none;
+}
+.upload-options label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+}
+.upload-options label::after {
+  content: 'add';
+  font-family: 'Material Icons';
+  position: absolute;
+  font-size: 2.5rem;
+  color: #c3bbbb;;
+  top: calc(50% - 2.5rem);
+  left: calc(50% - 1.25rem);
+  z-index: 0;
+}
+.upload-file-options label::after {
+      content: 'add';
+    font-family: 'Material Icons';
+    /* position: absolute; */
+    /* font-size: 1.5rem; */
+    color: #000000;
+    /* top: calc(50% - 2.5rem); */
+    /* left: calc(50% - 1.25rem); */
+    margin-left: 20px;
+    z-index: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(4, 4, 4, 0.5);
+    /* left: unset;
+}
+.upload-options label span {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+.upload-options label span:hover i.material-icons {
+  color: lightgray;
+}
+img.img-fluid.img-thumbnail {
+    float: left;
+    width: 120px;
+    height: 120px;
+    background-size: cover;
+}
+</style>
+{% endblock %}
+
+{% block SCRIPT %}
+// upload Documents
+
+$('#project_file_upload').change( function(){
+    var file = this.files[0];
+    console.log( file);
+    ImageUploadAjax(file,'{% url 'ApplicationDataUpdate' %}','{{ csrf_token }}','{{project.id}}','file','secondary')
+});
+
+// Start - Project Image Upload
+$('#image_upload').change( function(){
+    var file = this.files[0];
+    console.log( file);
+    ImageUploadAjax(file,'{% url 'ApplicationDataUpdate' %}','{{ csrf_token }}','{{project.id}}','image','secondary')
+});
+// End - Project Image  Upload
+
+// Start - Rich Text 
+
+    $("#id_response").shieldEditor({
+      commands: [
+          "formatBlock", "removeFormat",
+          "fontName", "fontSize", "foreColor", "backColor",
+          "bold", "italic", "underline", "strikeThrough",
+          "justifyLeft", "justifyCenter", "justifyRight", "justifyFull",
+          "insertUnorderedList", "insertOrderedList",
+          "indent", "outdent",
+          "createLink", "unlink", "insertImage",
+          "viewHtml"
+      ]
+  });// End- Rich Text
+
+
+  
+  // Start - Send Responses
+  $(document).on("click",'button#id_send_button',function(e)
+    {
+      textarea_value =  $("#id_response").val();
+       var editor = $('#id_response').swidget();
+        $(editor.getDoc().body).html("");
+        editor.update(); // make text area blank
+        ProjectResponseFormAjax({{project.id}},'Response',textarea_value,'{{ csrf_token }}','{% url 'ApplicationDataUpdate' %}','{{ request.user.id }}');
+    });
+
+  // End - Send response
+{% endblock %}

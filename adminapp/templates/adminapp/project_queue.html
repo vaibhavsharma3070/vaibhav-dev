@@ -1,0 +1,158 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+
+{% block TITLE %} Project Queues {% endblock %}
+{% block content %}
+<br>
+{% for p in projects %}
+<!--Card of Admin User-->
+<div style="margin-top: 100px;"></div>
+<div class="card d-block w-100" style="box-shadow: 0 1px 6px #080808;background:#EFEDE1">   
+      <div class="card-body">
+        {% if user.is_admin %}
+        <a href="{% url 'edit_project' id=p.id %}" ><button type="button" class="btn btn-default btn-lg float-right" id="edit_project">
+            <span class="material-icons">&#xe254;</span></button></a>
+        {% endif %}
+        <div class="row">
+            <div class="col-4"> 
+                {% if user.is_admin %}
+                <div class="edit_primary_image"> 
+                    <label for="image_upload{{p.id}}" class="btn btn-default btn-lg float-right">
+                    <span  class="material-icons"></span> 
+                    </label> 
+                    <input id="image_upload{{p.id}}" type="file" class="image-upload" accept="image/*" title={{p.id}}>
+                </div>
+                {% endif %} 
+               <div id="project_primary_image" style="width: 100%; height:100%" class="card-img-top project_primary_image">
+               {% load custom_tags %}
+               {% for imageFile in p.Project_file.all %}               
+                    {% if imageFile.subtype|compareString:'primary' %} 
+                         <!--Display Primary Image-->              
+                        <div  style="background: url('/media/{{imageFile.file }}') no-repeat center; border-width: thin medium thick 5px; border-color: #696969;border: #ccc9c9; border-style: double;    width: 100%;  background-size: 100% auto;              
+                        height: 100%;/*background-size: 100% 100%;*/" >
+                        </div> 
+                    {% endif %} 
+               {% endfor %}
+               </div>   
+            </div>
+            <div class="col-8">
+                <div class="row">
+                    <div class="col px-md-6 noborder">
+                    <table class="table">
+                        <tr ><td ><b>Project Name</b></td><td>{{p.name}}</td></tr>
+                        <tr><td><b>Owner</b></td><td><div class="tags-input"><span class="tag">{{p.owner}}</span></div></td></tr>
+                        <tr><td><b>Main Major</b></td>
+                        <td><div class="tags-input">
+                        {% load custom_tags %}
+                        {% with  p.main_major|split:',' as tags %}
+                           {% for tag in tags %}
+                            <span class="tag">{{ tag}}</span>
+                           {% endfor %}
+                        {% endwith %}
+                        </div>
+                        </td>                        
+                        </tr>
+                        
+                    </table>
+                    </div>
+                    <div class="col px-md-6">
+                        <table class="table">
+                            <tr ><td ><b>Assignee</b></td><td> 
+                            <div class="tags-input">
+                            {% for a in p.project_assignee.all %}
+                            <span class="tag">{{a.assigned_person.name}}</span>                          
+                            {% endfor %}  
+                            </div>                      
+                            </td>
+                            </tr>
+                            <tr><td><b>Budget</b></td><td>{{p.budget}}$</td></tr>                        
+                            <tr><td><b>State</b></td><td><div class="tags-input"><span class="tag">{{p.state}}</span></div></td></tr>                        
+                        </table>                                     
+                    </div>
+                    
+                </div>
+                {% with  p.estimated_time|split:'-' as tags %}
+                <b>Estimated Time</b><pre>   Days : {{tags.0 }}  Months : {{tags.1 }}   Years : {{tags.2 }}</pre>
+                {% endwith %}                
+                <b>Progress</b>
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width:{{p.progress }}%" aria-valuenow="{{ p.progress }}" aria-valuemin="0" aria-valuemax="100">{{ p.progress }}%</div>
+                </div> 
+               
+            </div>
+                
+                <h6 class="mt-2">Last Response</h6><br>
+                <div class="card-body border mb-2 w-100" style="background: white;min-height: 150px;">
+                    {{ p.Project_response.last.response|safe}}
+                </div>
+                <div style="width:100%">
+                    <a href="{% url 'team_project_detail' id=p.id %}" >
+                        <button type="button" class="btn btn-danger btn-lg float-right" id="show_project" style="width: 100px;padding: 5px;">
+                        <span class="">Go</span></button>
+                    </a>
+                </div>            
+        </div>
+
+    </div> 
+</div>
+{% include "adminapp/footer.html" %}
+
+<hr class="hr-dashed-custom">
+{% endfor %}
+{% endblock %}
+{% block CSSLINK %}  
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}> 
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>   
+<link rel="stylesheet" href={% static "adminapp/richtext/main.css" %}> 
+
+{% endblock %}
+
+{% block SCRIPTLINK %}
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+
+{% endblock %}
+
+{% block CSS %}
+<style>
+
+
+</style>
+{% endblock %}
+
+{% block SCRIPT %}
+
+/** start: project primary Image hover */
+$( ".project_primary_image" ).mouseover(function() { 
+    $p =   $(this).parent();
+    $p.find(".edit_primary_image").css("display","block");
+}).mouseout(function() {   
+    $p =   $( this).parent();
+    $p.find(".edit_primary_image").css("display","none");
+});
+$( ".edit_primary_image" ).mouseover(function() {   
+  $( this ).css("display","block")
+}).mouseout(function() {
+    $( this ).css("display","none")
+});
+/** end : project primary Image hover */
+
+/** uploda primary Image **/
+  $('.image-upload').each(function () 
+  {    
+    $(this).change(function (e) {
+    console.log(e.target.title);    
+    var file = this.files[0];
+    var pid = $(this).attr("title");
+    console.log( pid);
+    ImageUploadAjax(file,'{% url 'ApplicationDataUpdate' %}','{{ csrf_token }}',pid,'image','primary')
+    });
+ });
+
+{% endblock%}

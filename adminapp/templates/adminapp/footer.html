@@ -1,0 +1,196 @@
+{% load static %}
+   
+   
+   <!-- Footer -->
+   <footer class="page-footer font-small " style="background:#000820;color:white;">
+    <div class="container-fluid px-5">
+        <div class="row pt-5">
+            <div class="col-lg-2 px-0">
+                <h5 class="text-uppercase font-weight-bold">Support</h5>
+                <ul class="list-unstyled mt-4">
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">Contact Us</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">Careers</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">FAQ</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">Help center</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-2 px-0">
+                <h5 class="text-uppercase font-weight-bold">Company</h5>
+                <ul class="list-unstyled mt-4">
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">About Us</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">What's New</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">Latest Product</a>
+                    </li>
+                    <li class="mt-3">
+                        <a href="#!" class="text-decoration-none">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-4">
+                <div class="row">
+                    <h5 class="text-uppercase font-weight-bold text-center">Products</h5>
+                    {% if butt|length == 1 %}
+                    {% for data in butt %}
+
+                    <div class="col-12">
+                        <ul class="list-unstyled mt-2">
+                            {% for d in data.value %}
+                            {% if d.url == None %}
+                            <li class="mt-2">
+                                <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="mt-2">
+                                <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    
+                    {% elif butt|length == 2 %}
+                    <div class="col-6 px-2">
+                        <ul class="list-unstyled mt-2">
+                            {% for d in data.value %}
+                            {% if d.url == None %}
+                            <li class="mt-2">
+                                <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="mt-2">
+                                <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    
+                    {% elif butt|length == 3 %}
+                    {% for data in butt %}
+                    <div class="col-4 px-1">
+                        <ul class="list-unstyled mt-2">
+                            {% for d in data.value %}
+                            {% if d.url == None %}
+                            <li class="mt-2">
+                                <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="mt-2">
+                                <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    {% elif butt|length == 4 %}
+                    {% for data in butt %}
+                    <div class="col-3 px-1">
+                        <ul class="list-unstyled mt-2">
+                            {% for d in data.value %}
+                            {% if d.url == None %}
+                            <li class="mt-2">
+                                <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="mt-2">
+                                <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                    <span class="text-danger">
+                                        {% if d.isNew_flag %}
+                                        <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-4 px-0 text-end">
+                <div class="d-block mt-2 me-3">
+                    <img src="{% static 'adminapp/img/google.png' %}" class="googleApple" alt="googel play">
+                </div>
+                <div class="d-block mt-2 pt-1 me-3">
+                    <img src="{% static 'adminapp/img/apple.png' %}" class="googleApple" alt="googel play">
+                </div>
+                <div class="d-block me-3">
+                    <i class="fa fa-facebook-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                    <i class="fa fa-instagram bg-transparent border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                    <i class="fa fa-twitter-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                    <i class="fa fa-linkedin-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                    <i class="fa fa-google bg-transparent border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="d-flex opacity-50 legal_footer_border pt-1">
+        <a href="#" class="text-decoration-none ms-3">Terms</a>
+        <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Policies</a>
+        <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Report Vulnerability</a>
+        <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Newsletter</a>
+        <div class="ms-auto pe-3 h-inherit" id="copyright_year"></div>
+    </div>
+</footer>
+<!-- Footer -->

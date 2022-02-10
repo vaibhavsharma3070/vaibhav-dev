@@ -1,0 +1,299 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Project Queues {% endblock %}
+{% block content %}
+
+<br>
+<!--Card of Non Admin User-->
+<div class="card d-block w-100" > 
+      {% if user.is_authenticated %}
+        {% if user.is_admin %}
+          <a href="{% url 'edit_project' id=project.id %}" ><button type="button" class="btn btn-default btn-lg float-right" id="edit_project">
+          <span class="material-icons">&#xe254;</span></button></a>
+        {% endif %}  
+      {% endif %}  
+      <div class="card-body border m-2">       
+        
+        <div class="row"  >
+              <div class="col-4">              
+                   <!--Start Image Box-->               
+                    <div class="row text-center text-lg-left"  style="width:100%;max-height:500px; overflow: auto;">
+                      {% for i in projrct_file %}
+                      {% if i.type == 'image' %}     
+                      <div class="col-6 ">
+                        <a href="/media/{{i.file }}" class="d-block mb-4 h-100" target="_blank">
+                        <img class="img-fluid img-thumbnail" src="/media/{{i.file }}" alt="" height="200px" width="200px">
+                        </a>
+                      </div>
+                      {% endif %}
+                      {% endfor %}
+                      {% if user.is_authenticated %}
+                      <div class="col-6  upload-options">
+                        <div class="upload-options">
+                          <label>
+                          <input id="image_upload" type="file" class="image-upload" accept="image/*">
+                          </label>
+                        </div>
+                      </div>
+                      {% endif %}
+                    </div> 
+              </div>
+              <div class="col-8">
+                <div class="row">
+                  <div class="col px-md-6">
+                      <table class="table">
+                          <tr><td><b>Project Name</b></td><td>{{project.name}}</td></tr>
+                          <tr><td>Owner</td><td><div class="tags-input"><span class="tag">{{project.owner}}</span></div></td></tr>
+                          
+                          <tr><td>Developer Involved</td><td>
+                            <div id="" class="tags-input">
+                            {% for u in assignees %}
+                            <span class="tag" id="{{u.assigned_person.id}}">{{u.assigned_person}}<span class="remove_assignee"></span></span>
+                            {% endfor %}
+                            </div>
+                          </td></tr>
+                          <tr><td>Tags Of Used Technology</td><td>
+                          <div class="tags-input">
+                            {% load custom_tags %}
+                            {% with  project.tags_of_used_technology|split:',' as tags %}
+                            {% for tag in tags %}
+                              <span class="tag">{{ tag}}</span>
+                            {% endfor %}
+                            {% endwith %}
+                            </div>
+                          </td></tr>
+                          <tr><td>Estimated Time</td><td>
+                          {% with  project.estimated_time|split:'-' as tags %}
+                              Days : {{tags.0 }}<br>
+                              Months : {{tags.1 }}<br>
+                              Years : {{tags.2 }}
+                            {% endwith %}
+                          </td></tr>                     
+                          </table>
+                  </div>
+                  <div class="col px-md-6">
+                      <table class="table">
+                        <tr><td><b>State</b></td><td><div class="tags-input"><span class="tag">{{project.state}}</span></div></td></tr>
+                        <tr><td>URL</td><td><a href="{{project.project_url}}" target="_blank">{{project.project_url}} </a></td></tr> 
+                        <tr><td>Budget</td><td>{{project.budget}}$</td></tr>
+                        <tr><td>Similar Project</td><td>{{project.similar_project}}</td></tr>
+                      </table>
+                      <label>Documents: <br>
+                      {% if user.is_admin %}
+                      <div class="upload-file-options">
+                        <label>                          
+                        <input id="project_file_upload" type="file"  accept=".doc,.pdf">                          
+                        </label>                          
+                      </div>   
+                      {% endif %} 
+                        <ul style="width: 300px; height: 100px; overflow: auto;">
+                        {% for i in projrct_file %}                          
+                        {% if i.type == 'file' %}                      
+                        <li> <a href="/media/{{i.file }}" target="_blank">{{i.file }} </a></li>
+                        {% endif %}
+                        {% endfor %}  
+                        </ul>                         
+                      </label>
+                      
+                  </div>                  
+                </div> 
+                
+                Progress
+                <div class="progress">
+                <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width:{{project.progress }}%" aria-valuenow="{{ project.progress }}" aria-valuemin="0" aria-valuemax="100">{{ project.progress }}%</div>
+                </div> <br>                
+              </div>
+
+         </div>    
+       
+    </div> 
+    
+</div>
+<!--Start Responses -->
+    
+    <div class="row m-1">    
+     <div class="col-md-12 border">
+        <label ><h6>Responses</h6>  </label>
+        {% if user.is_authenticated %}
+        <div class="border m-1">
+           <label ><h6>{{request.user.name}} | Role</h6>  </label>
+           <div class="form-group m-1">
+              <textarea class="form-control rounded-0" id="id_response" rows="5" name="id_response"></textarea>
+              <button class="btn btn-danger float-right" id="id_send_button">Send</button>
+              
+            </div>
+        </div>
+        {% endif %}
+        <br>
+        <!--show previous responses-->
+        <div id="all_visible_responses" >
+        {% for r in responses %}
+        <br>
+        <div class="border m-1">
+           <label ><h6>{{r.created_by}} | {{r.created}}</h6>  </label>
+           <div class="form-group m-1">
+              <p><q>{{r.response|safe}}</q></p>              
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+        <!--End Show responses-->
+     </div>
+    </div> 
+  <!--End Responses-->
+<br>
+{% include "adminapp/footer.html" %}
+{% endblock %}
+{% block CSSLINK %}  
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>  
+<link rel="stylesheet" href={% static "adminapp/richtext/main.css" %}> 
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>    
+{% endblock %}
+
+{% block SCRIPTLINK %}
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/richtext/shieldui-all.min.js" %}></script>
+
+{% endblock %}
+
+{% block CSS %}
+ <style>   
+.upload-options { 
+    cursor: pointer;
+    overflow: hidden;
+    text-align: center;
+    -webkit-transition: background-color ease-in-out 150ms;
+    transition: background-color ease-in-out 150ms;
+        min-height: 100px;
+}
+.upload-options input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+.upload-file-options input {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+  display:none;
+}
+.upload-options label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 100%;
+  font-weight: 400;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  overflow: hidden;
+}
+.upload-options label::after {
+  content: 'add';
+  font-family: 'Material Icons';
+  position: absolute;
+  font-size: 2.5rem;
+  color: #c3bbbb;;
+  top: calc(50% - 2.5rem);
+  left: calc(50% - 1.25rem);
+  z-index: 0;
+}
+.upload-file-options label::after {
+      content: 'add';
+    font-family: 'Material Icons';
+    /* position: absolute; */
+    /* font-size: 1.5rem; */
+    color: #000000;
+    /* top: calc(50% - 2.5rem); */
+    /* left: calc(50% - 1.25rem); */
+    margin-left: 20px;
+    z-index: 0;
+    border-radius: 50%;
+    border: 1px solid rgba(4, 4, 4, 0.5);
+    /* left: unset;
+}
+.upload-options label span {
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+  text-align: center;
+}
+.upload-options label span:hover i.material-icons {
+  color: lightgray;
+}
+img.img-fluid.img-thumbnail {
+    float: left;
+    width: 120px;
+    height: 120px;
+    background-size: cover;
+}
+</style>
+{% endblock %}
+
+{% block SCRIPT %}
+// upload Documents
+
+$('#project_file_upload').change( function(){
+    var file = this.files[0];
+    console.log( file);
+    ImageUploadAjax(file,'{% url 'ApplicationDataUpdate' %}','{{ csrf_token }}','{{project.id}}','file','secondary')
+});
+
+// Start - Project Image Upload
+$('#image_upload').change( function(){
+    var file = this.files[0];
+    console.log( file);
+    ImageUploadAjax(file,'{% url 'ApplicationDataUpdate' %}','{{ csrf_token }}','{{project.id}}','image','secondary')
+});
+// End - Project Image  Upload
+
+// Start - Rich Text 
+
+    $("#id_response").shieldEditor({
+      commands: [
+          "formatBlock", "removeFormat",
+          "fontName", "fontSize", "foreColor", "backColor",
+          "bold", "italic", "underline", "strikeThrough",
+          "justifyLeft", "justifyCenter", "justifyRight", "justifyFull",
+          "insertUnorderedList", "insertOrderedList",
+          "indent", "outdent",
+          "createLink", "unlink", "insertImage",
+          "viewHtml"
+      ]
+  });// End- Rich Text
+
+
+  
+  // Start - Send Responses
+  $(document).on("click",'button#id_send_button',function(e)
+    {
+      textarea_value =  $("#id_response").val();
+       var editor = $('#id_response').swidget();
+        $(editor.getDoc().body).html("");
+        editor.update(); // make text area blank
+        ProjectResponseFormAjax({{project.id}},'Response',textarea_value,'{{ csrf_token }}','{% url 'ApplicationDataUpdate' %}','{{ request.user.id }}');
+    });
+
+  // End - Send response
+{% endblock %}

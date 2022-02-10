@@ -1,0 +1,199 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+
+{% block TITLE %} Admin Home Page {% endblock %}
+{% block CSSLINK %}  
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<!-- <link rel="stylesheet" href={% static "adminapp/richtext/main.css" %}> -->
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}> 
+<link rel="stylesheet" href={% static "adminapp/input_tags/tags.css" %}>    
+{% endblock %}
+
+{% block SCRIPTLINK %}
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<!-- <script type="text/javascript" src={% static "adminapp/js/main.js" %}></script> -->
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+
+{% endblock %}
+
+{% block content %}
+    <div style="margin-top: 80px;"></div>
+    <br><br>
+    <div class="card-body border" id="Whosus">
+        <button type="button" class="btn btn-default btn-lg float-right" id="btnwhyusp1">
+            <span class="material-icons">&#xe254;</span>
+        </button>
+        <h5 class="card-title">Whos us</h5>
+        <p id="whyusp1">{{WHOSUS}}</p>
+
+    </div>
+    <div class="card-body border mt-3" id="Whyus" style="background:white">
+        <button type="button" class="btn btn-default btn-lg float-right" id="btnwhyusp2">
+            <span class="material-icons">&#xe254;</span></button>
+        <h4 class="card-title">Why us</h4>
+
+        <p id="whyusp2">{{WHYUS}}</p>
+    </div>   
+    
+    <!--table-2-->
+    <div style="background-color:white;" class="mt-3">
+        <div style="display: flex;">
+        <div class="" style ="border-left: 5px solid red;height: 50px;width:20px"><!--<i class="right"></i>--></div>
+        <div style="font-size: 30px;">Projects</div>
+        </div>
+        <div id="table-wrapper">
+            <div id="table-scroll">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Title</th> 
+                            <th scope="col">Status</th>                           
+                            <th scope="col">Owner</th>
+                            <th scope="col">Assinee</th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+                     {% for p in projects %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter0|add:page_obj.start_index}} </th>
+                            <td><a href='{% url 'team_project_detail'  p.id %}' >{{p.name}}</a></td> 
+                            <td>{{p.state}}</td>                             
+                            <td>{{p.owner}}</td>
+                            <td>
+                            <div class="tags-input">
+                            {% for a in p.project_assignee.all %}
+                            <span class="tag">{{a.assigned_person.name}}</span>                          
+                            {% endfor %}  
+                            </div>  
+                            </td>
+                        </tr>
+                     {% endfor %}  
+                    </tbody>
+                </table>
+            </div>
+            <!--pagination-->
+            {% if is_paginated %}
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                        <li class="page-item"><a  class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                        </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link" href="#">
+                                {{ i }} <span class="sr-only">(current)</span>
+                                </a>
+                            </li>
+                        {% else %}
+                             <li class="page-item"><a  class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                        {% if page_obj.has_next %}                            
+                        <li class="page-item">
+                        <a  class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                        </li>
+                        {% else %}
+                                <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Next</a>
+                                </li>
+                                
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+    </div>
+
+    <!--Table2 end-->
+
+  
+    
+{% endblock %}
+
+{% block CSS %}
+
+<style>
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #343a40;
+    border-color: #ff0023;
+}
+
+div#Whosus {
+background: white;
+}
+
+button#btnwhyusp1save {
+position: relative;
+bottom: 9px;
+/* left: -100px; */
+}
+.editicon{
+
+}
+</style>
+{% endblock %}
+
+
+
+{% block SCRIPT %}
+
+$("#btnwhyusp1").click(function(e)
+{
+let newHtml = `<textarea id="whyusTextArea" rows="6" cols="70" style="width:100%;">${$("p#whyusp1").text()}</textarea>
+<button type="button" class="btn btn-default btn-sm float-right btn-success" id="btnwhyusp1save"><span
+        class="material-icons">&#xe161;</span></button>`;
+$("p#whyusp1").html(newHtml);
+$("#btnwhyusp1").hide();
+$("#btnwhyusp2").hide();
+});
+$("#btnwhyusp2").click(function(e){
+
+let newHtml = `<textarea id="whosusTextArea" rows="6" cols="70" style="width:100%;">${$("p#whyusp2").text()}</textarea>
+<button type="button" class="btn btn-default btn-sm float-right btn-success" id="btnwhyusp2save"><span
+        class="material-icons">&#xe161;</span></button>`;
+$("p#whyusp2").html(newHtml);
+$("#btnwhyusp1").hide();
+$("#btnwhyusp2").hide();
+});
+
+$(document).on("click",'#btnwhyusp1save',function(e)
+{
+    let txt = $('#whyusTextArea').val();
+    $("p#whyusp1").html(txt);
+    $("#btnwhyusp1").show();
+    $("#btnwhyusp2").show();
+    console.log("WHOSUS",txt,'LOV');
+    AjaxCall("WHOSUS",txt,'LOV','{{ csrf_token }}','{% url 'ApplicationDataUpdate' %}');
+});
+
+$(document).on("click",'#btnwhyusp2save',function(e)
+{
+    let txt = $('#whosusTextArea').val();
+    $("p#whyusp2").html(txt);
+    $("#btnwhyusp1").show();
+    $("#btnwhyusp2").show();
+    AjaxCall("WHYUS",$("p#whyusp2").text(),'LOV','{{ csrf_token }}','{% url 'ApplicationDataUpdate' %}'); 
+});
+
+{% endblock %}
+

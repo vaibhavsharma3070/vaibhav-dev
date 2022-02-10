@@ -1,0 +1,190 @@
+.product_hover:hover .product_dropdown {
+    display: block;
+    right: 0px;
+    /* transform: scale(Y); */
+}
+.product_dropdown {
+    background-color: rgba(0, 0, 0, 0.87);
+    display: none;
+    width: 130px;
+}
+
+/* language_color dropdowns */
+.lang_col_hover:hover .lang_col_dropdown {
+    display: block;
+    right: 125px;
+    top: 0px;
+    /* transform: scale(Y); */
+}
+.lang_col_dropdown {
+    background-color: rgba(0, 0, 0, 0.87);
+    display: none;
+    width: 120px;
+}
+/* language color border bottom */
+.lang_color_bb:after {
+    display:block;
+    width: auto;
+    content: '';
+    border-bottom: solid 3px #fff;
+    transform: scaleX(0);  
+    transition: transform 250ms ease-in-out;
+}
+.lang_color_bb:hover:after { 
+    transform: scaleX(1);
+}
+
+/* border hover */
+
+.nav_item_link:after {
+    display:block;
+    width: auto;
+    content: '';
+    border-bottom: solid 3px #fff;  
+    transform: scaleX(0);  
+    transition: transform 250ms ease-in-out;
+}
+.nav_item_link:hover:after { 
+    transform: scaleX(1);
+}
+
+/* dropwond hover items */
+.product_links {
+    opacity: 0.8;
+}
+.product_links:hover {
+    text-decoration: none;
+    opacity: 1;
+}
+/* text animation */
+.animation_container {
+    /*This part is important for centering*/
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slider_h_animation {
+    width: 20ch;
+    animation: typing 5s steps(22), blink .5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    /* border-right: 3px solid;
+    font-family: monospace; */
+    font-size: 90px;
+    animation-iteration-count: infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0
+    }
+}
+@keyframes blink {
+    50% {
+        border-color: transparent
+    }
+}
+
+.slider_h_description {
+    font-size: 20px;
+}
+
+/* product carousel div */
+.product_carousel_div {
+    height: 100vh;
+    width: 100%;
+    background:#014666;
+    color: #fff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav_bar_style {
+    /* background-color: #692592; */
+    /* box-shadow: 0 1px 6px #080808; */
+    padding-left: 35px;
+    padding-right: 35px;
+    background-image: url(/static/mainapp/img/background.jpg);
+    background-size: cover;
+}
+
+.carousel_bg_style {
+    min-height: 100vh !important;
+    height: auto;
+    background-size: cover;
+    background-image: url("/static/mainapp/img/background.jpg");
+    background-repeat: no-repeat;
+    color: #fff;
+    display:flex;
+    justify-content:
+    center;
+    align-items: center;
+}
+/* swiper css */
+.swiper {
+    overflow-x: hidden;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+.swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    /* background: #fff; */
+
+    /* Center slide text vertically */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* footer icons */
+.footer_icon_size {
+    font-size: 28px !important;
+}
+.googleApple {
+    height: 80px;
+}
+.legal_footer_border {
+    border-top: 1px solid #dee2e6;
+}
+
+.four_o_four {
+    background-color: #3b73b9;
+    min-height: 100vh !important;
+    height: auto;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: #fff;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#particles-js{
+    width: 100%;
+    height: 100%;
+    /* background-color: #9300F5; */
+    background-image: url('');
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+}

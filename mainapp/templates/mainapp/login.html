@@ -1,0 +1,109 @@
+{% extends 'mainapp/header.html' %}
+{% load static %}
+{% block TITLE %} login {% endblock %}
+{% block content %}
+<main id="contentArea" class="rsp-container">
+{% if request.resolver_match.url_name != "logout" %}
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+  {% endif %}
+ {% endif %}
+  <div id="madvertise_cmp_statistics" data-url="/track/madvertise_cmp" style="display:none"></div>
+
+
+  <div class="main-content util-clearfix">
+    <div class="main-column util-clearfix">
+
+
+
+      <form id="sessionNewForm" class="loginForm" action="#" method="post">
+        {% csrf_token %}
+        <div class="simpleFormHeading rsp-gte-tablet">
+          <h1>Log in</h1>
+          <p>Don’t have an account yet? <a href="/signup" class="text-danger">Sign up</a></p>
+        </div>
+        <div class="inputFormBox">
+          <h3 class="simpleFormLabel">Login</h3>
+          <div class="inputFormPadding">
+            <input type="text" name="login" id="login" class="inputForm" placeholder="e-mail" value={{ request.COOKIES.email }}>
+          </div>
+          <h3 class="simpleFormLabel">Password</h3>
+          <div class="inputFormPadding">
+            <input type="password" id="password" name="password" class="inputForm" placeholder="Password">
+          </div>
+        </div>
+        <div class="simpleFormItem">
+          <table class="w-100">
+            <tr>
+              <td>
+                <label class="container">
+                  <h3 class="simpleFormLabel">Remember me</h3>
+                  <input type="checkbox" checked="checked" id="RememberMe" name="RememberMe">
+                  <span class="checkmark"></span>
+              </td>
+              <td>
+                <a class="util-float-right text-danger" href="{% url 'password_reset' %}">Forgot password?</a>
+              </td>
+            </tr>
+          </table>
+         
+          
+        </div>
+        <div class="simpleFormItem">
+          <input type="submit" class="btn-primary-wide" value="Log in">
+        </div>
+
+
+
+      </form>
+
+    </div>
+
+    <div class="text-center">
+      <p>Or login with</p><br>
+      <a href="#" class="fa fa-facebook"></a>
+      <a href="#" class="fa fa-google"></a>
+      <a href="#" class="fa fa-linkedin"></a>
+      <a href="#" class="fa fa-instagram"></a>
+    </div>
+
+  </div>
+</main>
+
+{% endblock %}
+
+
+
+{% block LINK %}
+    
+{% endblock %}
+
+{% block CSS %}
+<style>
+    #copyright_year {
+        margin-bottom: 9px;
+    }
+</style>
+
+  <!-- Bootstrap CSS -->
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+  <!-- <link rel="stylesheet" href={% static "mainapp/css/cdnjs.css" %}> -->
+  <!-- <link rel="stylesheet" href={% static "mainapp/css/stackpath.css" %}> -->
+  <!-- <link rel="stylesheet" href={% static "mainapp/css/login.css" %}> -->
+  <!-- <link rel="stylesheet" href={% static "mainapp/css/main.css" %}> -->
+
+
+  
+  <link rel="stylesheet" href={% static "mainapp/css/cdnjs.css" %}>
+  <link rel="stylesheet" href={% static "mainapp/css/stackpath.css" %}>
+  <link rel="stylesheet" href={% static "mainapp/css/login.css" %}>
+  <link rel="stylesheet" href={% static "mainapp/css/main.css" %}>
+  <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+  
+{% endblock %}
+

@@ -1,0 +1,118 @@
+{% extends 'adminapp/header.html' %}
+
+
+
+{% load static %}
+{% block TITLE %} Add Project{% endblock %}
+{% block content %}
+
+<div class="page_name w-100 float-right" style="text-align: center;padding: 5px;"><B>Add Project</B></div>
+<br>
+
+<form method="POST" enctype="multipart/form-data" autocomplete="off">
+{% csrf_token %}
+  <div class="row">
+    <div class="col-sm-6">
+      <!-- first column -->
+      <div class="form-group">
+        {{ form.name.label_tag }}
+        {{ form.name }}
+        {{ form.name.errors }}
+      </div>
+      <div class="form-group">
+        {{ form.owner.label_tag }}
+        {{ form.owner }}
+        {{ form.owner.errors }}
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <!-- second column -->
+      <div class="form-group">
+       {{ form.state.label_tag }}<br>
+        {% for radio in form.state %}
+        <label for="{{ radio.id_for_label }}" class="mr-md-5">       
+        <span class="radio">{{ radio.tag }}</span>
+         {{ radio.choice_label }}
+        </label>
+        {% endfor %}
+         {{ form.state.errors }}       
+      </div>
+     
+      <div class="form-group">
+          {{ form.similar_project.label_tag }}
+          {{ form.similar_project }}
+          {{ form.similar_project.errors }}          
+        </div>        
+        
+        
+    </div><!--End of Second Column-->
+  </div> <!--End of row-->
+  <div class="form-group">
+      {{ form.short_description.label_tag }}
+      {{ form.short_description }}
+      {{ form.short_description.errors }}
+  </div>
+  <div class="form-group">
+      {{ form.description.label_tag }}
+      {{ form.description }}
+      {{ form.description.errors }}
+  </div>
+
+  <button type="submit" class="btn btn-danger">Save</button><br>
+  <br>
+  </div>
+</form>
+<br>
+
+{% include "adminapp/footer.html" %}
+{% endblock %}
+{% block CSSLINK %}
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+{% endblock %}
+
+{% block SCRIPTLINK %}
+
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+{% endblock %}
+
+ {% block SCRIPT %} 
+    // Start........DOB date picker    
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2012",
+      
+    });
+    // End........DOB date picker 
+     
+
+  {% endblock %}
+  {% block CSS %}
+  <style>
+  #large {
+	display: none;
+	position: absolute;		
+	background: #FFFFFF;	
+	padding: 5px;
+	z-index: 10;
+	min-height: 200px;
+	min-width: 200px;
+	color: #336699;
+}
+ul.errorlist {
+    color: red;
+}
+
+</style>
+
+  {% endblock %}

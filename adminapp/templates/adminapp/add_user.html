@@ -1,0 +1,212 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Add User {% endblock %}
+{% block content %}
+<B>Add User</B>
+<br>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}
+  <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="POST" enctype="multipart/form-data" autocomplete="off">
+{% csrf_token %}
+  <div class="row">
+    <div class="col-sm-6">
+      <!-- first column -->
+      <div class="form-group">
+        {{ userForm.name.label_tag }}
+        {{ userForm.name }}
+        {{ userForm.name.errors }}
+      </div>
+       <div class="form-group">
+      {{ userForm.type.label_tag }}
+      {{ userForm.type }}
+      {{ userForm.type.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.spacialist.label_tag }}
+        {{ userForm.spacialist }}
+        {{ userForm.spacialist.errors }}
+      </div>
+      <div class="form-group">
+         {{ userForm.currentwork.label_tag }}
+         {{ userForm.currentwork }}
+         {{ userForm.currentwork.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.company.label_tag }}
+         {{ userForm.company }}
+         {{ userForm.company.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.email.label_tag }}         
+         <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        {% comment %} <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="Username"> {% endcomment %}
+        {{ userForm.email }}
+      </div>
+
+         {{ userForm.email.errors }}
+      </div>
+      <div class="form-group">
+        {{ userForm.phone.label_tag }}
+        <br>
+         {{ userForm.Country }}
+         {{ userForm.phone }}
+         {{ userForm.phone.errors }}
+          {{ userForm.Country.errors }}
+      </div>
+      
+      <div class="form-group">
+       <div id="resume"></div>
+        <div class="upload-btn-wrapper">
+            <button class="btn" style="background: #dc3545;color: white;">Upload Resume</button>
+            {{ userFileForm.doc }}
+          </div>
+        {% comment %} {{ userFileForm.doc }} {% endcomment %}
+      </div>
+
+    </div>
+    <div class="col-sm-6">
+      <!-- second column -->
+      <div class="form-group">
+       {{ userForm.state.label_tag }}<br>
+        {% for radio in userForm.state %}
+        <label for="{{ radio.id_for_label }}" class="mr-md-5">       
+        <span class="radio">{{ radio.tag }}</span>
+         {{ radio.choice_label }}
+        </label>
+        {% endfor %}      
+      </div>
+      <div class="form-group">
+         {{ userForm.gender.label_tag }}<br>
+        {% for radio in userForm.gender %}
+        <label for="{{ radio.id_for_label }}" class="mr-md-5">       
+        <span class="radio">{{ radio.tag }}</span>
+         {{ radio.choice_label }}
+        </label>
+        {% endfor %} 
+      </div>
+      <div class="form-group">
+           {{ userForm.password1.label_tag }}
+         {{ userForm.password1 }}
+         {{ userForm.password1.errors }}          
+        </div>
+        <div class="form-group">
+           {{ userForm.password2.label_tag }}
+         {{ userForm.password2 }}
+         {{ userForm.password2.errors }}          
+        </div>        
+        <img src="/media/{{userFileForm.img.value }}" class="personalImg" alt="img" width="200px" height="200px" style="width: 100%;" id="client_image"> <br>
+        
+        <div class="form-group">
+         {% comment %} {{ userFileForm.img.label_tag }}<br> {% endcomment %}
+          <div class="upload-btn-wrapper">
+            <button class="btn" style="background: #dc3545;color: white;">Upload Image</button>
+            {{ userFileForm.img }}
+          </div>        
+         {{ userFileForm.img.errors }}
+        </div>
+        
+        <div class="form-group">
+           {{ userForm.birthday.label_tag }}
+         {{ userForm.birthday }}
+         {{ userForm.birthday.errors }}          
+        </div>
+      
+      <div class="form-group">
+        {{ userForm.tags_of_used_technology.label_tag }}
+         {{ userForm.tags_of_used_technology }}
+         {{ userForm.tags_of_used_technology.errors }}
+      </div>
+    </div><!--End of Second Column-->
+  </div> <!--End of row-->
+  <div style="display: flex;">
+        <div class="" style ="border-left: 5px solid red;height: 50px;width:20px"><!--<i class="right"></i>--></div>
+        <div style="font-size: 30px;"> Description</div>
+      </div>
+      <br>
+  <div class="form-group">     
+      {{ userForm.short_description }}
+      {{ userForm.short_description.errors }}
+  </div>
+
+  <button type="submit" class="btn btn-primary">Send</button>
+  <div class="small form-group float-right">An email will be sent to the user with info to reset password.</div>
+  </div>
+</form>
+{% include "adminapp/footer.html" %}
+
+{% endblock %}
+{% block CSSLINK %}
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+
+{% endblock %}
+
+{% block SCRIPTLINK %}
+
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+{% endblock %}
+
+ {% block SCRIPT %} 
+    // Start........DOB date picker    
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1900:2012",
+      
+    });
+    // End........DOB date picker 
+
+    /** Upload Image */
+    $('#id_img').change(function (e) {
+    $('#client_image').attr('src', window.URL.createObjectURL(this.files[0]));
+   
+
+    }); 
+
+     /** Upload Image */
+    $('#id_doc').change(function (e) {
+        console.log(this.files[0]);
+        $('#resume').html(this.files[0].name);
+
+    }); 
+
+  {% endblock %}
+  {% block CSS %}
+  <style>
+  #large {
+	display: none;
+	position: absolute;		
+	background: #FFFFFF;	
+	padding: 5px;
+	z-index: 10;
+	min-height: 200px;
+	min-width: 200px;
+	color: #336699;
+}
+ul.errorlist {
+    color: red;
+}
+img[src="/media/None"] {
+    display: none;
+}
+
+</style>
+  {% endblock %}

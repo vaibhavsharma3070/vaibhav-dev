@@ -1,0 +1,227 @@
+{% load static %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top nav_bar_style">
+        <a class="navbar-brand" href="/">
+            <img src="{% static 'adminapp/img/Logo_white.svg' %}" height="50px" alt="">
+            <span class="ms-3">Waqoor</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        {% for data in Products %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/product/{{data.id}}">{{data.name}}</a>
+                </li>
+            </ul>
+        </div>
+        {% endfor %}
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            {% if user.is_authenticated %}
+            <ul class="nav navbar-nav ms-auto"><span class="text-white"></span>
+                <li class="nav-item ml-auto px-2 mx-1 position-relative d-inline-block product_hover">
+                    <a class="navbar-brand nav-link nav_item_link" role="button">
+                        Products
+                    </a>
+                    <div class="position-absolute product_dropdown py-3">
+                        <ul class="d-block list-unstyled">
+                            {% for data in buttons %}
+                            {% if data.url == None %}
+                            <li class="ps-3 mb-1">
+                                <a class="text-decoration-none product_links" href="{% url 'not_found' %}">
+                                    {{data.name}} 
+                                    <span class="text-danger">
+                                        {% if data.isNew_flag %}
+                                            <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="ps-3 mb-1">
+                                <a class="text-decoration-none product_links" href="{% url 'product' data.id %}">
+                                    {{data.name}} 
+                                    <span class="text-danger">
+                                        {% if data.isNew_flag %}
+                                            <sup>new</sup>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                        
+                    </div>
+                </li>
+                <!-- <li class="nav-item dropdown"> -->
+                <li class="nav-item ml-auto px-2 mx-1 position-relative d-inline-block product_hover">
+                    <a class="navbar-brand nav-link nav_item_link" role="button">
+                        <img class="user-icon" src="{% static 'adminapp/css/download.jfif' %}"></img>
+                    </a>
+                    <div class="position-absolute product_dropdown py-3">
+                        <ul class="d-block list-unstyled">
+                            <li class="ps-3">
+                                <a href="#" class="text-decoration-none product_links">
+                                    <img class="user-icon" src="{% static 'adminapp/css/download.jfif' %}"></img>
+                                    {{user.name }}
+                                </a>
+                            </li>
+                            
+
+                            <li class="ps-3 mb-1">
+                                <a class="text-decoration-none product_links" href="{% url 'projects' 'assigned' %}">Assigned</a>
+                            </li>
+                            <li class="ps-3 mb-1">
+                                <a class="text-decoration-none product_links" href="{% url 'user_profile' user.email %}">My Profile</a>
+                            </li>
+                            <li class="nav-item ml-auto mx-1 position-relative lang_col_hover ps-3 mb-1">
+                                <a class="lang_color_link text-decoration-none lang_color_bb product_links d-table-cell" role="button">Languages</a>
+                                <div class="position-absolute lang_col_dropdown py-2">
+                                    <ul class="d-block list-unstyled">
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                English
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                French
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                Italian
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                Spanish
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item ml-auto mx-1 position-relative lang_col_hover ps-3 mb-1">
+                                <a class="lang_color_link text-decoration-none product_links lang_color_bb d-table-cell" role="button">Colors</a>
+                                <div class="position-absolute lang_col_dropdown py-2">
+                                    <ul class="d-block list-unstyled">
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                White
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                Red
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                Green
+                                            </a>
+                                        </li>
+                                        <li class="ps-3">
+                                            <a href="#" class="text-decoration-none product_links">
+                                                Black
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="ps-3 mb-1">
+                                <a class="text-decoration-none product_links" href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                    <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <img class="user-icon" src="{% static 'adminapp/css/download.jfif' %}"></img>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="background-color: #000000de;">
+                        <a  class="dropdown-item" href="#"><img class="user-icon"
+                                src="{% static 'adminapp/css/download.jfif' %}"></img>{{ user.name }}</a>
+                        <hr class="my-1">
+                        <a class="dropdown-item" href="#">Languages</a>
+                        <a class="dropdown-item" href="#">Colors</a>
+                        <a class="dropdown-item" href="{% url 'projects' 'assigned' %}">Assigned</a>
+                        <a class="dropdown-item" href="{% url 'user_profile' user.email %}">My Profile</a>
+                        <a class="dropdown-item" href="{% url 'contact_us' %}">Contact Us</a>
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div> -->
+                </li>
+            </ul>
+            {% else %}
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item ml-auto px-2 mx-1 position-relative d-inline-block product_hover">
+                        <a class="navbar-brand nav-link nav_item_link" role="button">
+                            Products
+                        </a>
+                        <div class="position-absolute product_dropdown py-3">
+                            <ul class="d-block list-unstyled">
+                                {% for data in buttons %}
+                                {% if data.url == None %}
+                                <li class="ps-3 mb-1">
+                                    <a class="text-decoration-none product_links" href="{% url 'not_found' %}">
+                                        {{data.name}}
+                                        <span class="text-danger">
+                                            {% if data.isNew_flag %}
+                                                <sup>new</sup>
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                                {% else %}
+                                <li class="ps-3 mb-1">
+                                    <a class="text-decoration-none product_links" href="{% url 'product' data.id %}">
+                                        {{data.name}}
+                                        <span class="text-danger">
+                                            {% if data.isNew_flag %}
+                                                <sup>new</sup>
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                </li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+                            
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item ml-auto px-2 mx-1">
+                        <a class="navbar-brand btn nav_item_link" href="/login">Login</a>
+                    </li>
+                    
+                </ul>
+                <!-- Example split danger button -->
+            </div>
+            {% endif %}
+
+        </div>
+    </nav>
+
+
+<script>
+    $(window).scroll(function () {
+            $('nav.navbar').slideDown()
+    });
+    var timer = null;
+    window.addEventListener('scroll', function () {
+        if (timer !== null) {
+            clearTimeout(timer);
+        }
+        timer = setTimeout(function () {
+            // do something
+            if (window.scrollY != 0){
+                $('nav.navbar').slideUp()
+            }
+        }, 2000);
+    }, false);
+    
+</script>

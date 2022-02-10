@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+{% load static %}
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script src="https://use.fontawesome.com/df9c699af2.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title>{% block TITLE %} {% endblock %}</title>    
+    {% block CSSLINK %}
+    {% endblock %}
+    <link rel="stylesheet" href={% static "adminapp/css/main.css" %}>
+    <link rel="stylesheet" href={% static "adminapp/css/404.css" %}>
+    <link rel="stylesheet" href={% static "adminapp/css/svg.css" %}>
+    <link rel="stylesheet" href={% static "adminapp/css/navbar.css" %}>
+    {% block CSS %}
+    {% endblock %}
+
+</head>
+
+<body style="background:#efede1;font-family: "Gotham SSm",Helvetica,Arial,sans-serif;
+    font-size: 13px;
+    line-height: 1.42857;
+    color: #222;">
+    <!--  navbar -->
+    {% include 'adminapp/navbar.html' %}
+
+    <div class="" >    
+    {% if request.resolver_match.url_name != 'HomePage' %}    
+        {% if user.is_admin %} <!--Only admin would be able to see menu items-->
+            <span style="font-size:30px;cursor:pointer;float: left;color: white" onclick="openNav()">&nbsp;&#9776;</span>
+        {% endif %} 
+    {% endif %} 
+
+       
+    </div>
+    <div style="background-color: #F7F3EB;">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div class="container-fluid">       
+        {% if user.is_admin %} <!--Only admin would be able to see menu items-->
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="{% url 'home_page' %}" id="menu_home_page">HomePage</a>
+            <a href="{% url 'projects' 'queued' %}" id="menu_project_queue">Project Queue</a>
+            <a href="{% url 'add_project' %}" id="menu_projects">Project</a>
+            <a href="{% url 'user' %}" id="menu_user">User</a>
+        </div>   
+        {% endif %}
+        <!-- <div id="main" class="main">
+        
+            <div class="container mt-2" style="background-color: white;    min-height: 1000px;">
+            {% comment %} <a href="{{ request.META.HTTP_REFERER }}" class="btn btn-primary" class>Back</a> {% endcomment %}
+                
+            </div>
+        </div> -->
+    </div>
+   
+   
+</div>
+
+    <!-- Footer -->
+        {% comment %} <footer class="page-footer font-small " style="background:#000820;color:white;">
+            <div class="container-fluid px-5">
+                <div class="row pt-5">
+                    <div class="col-lg-2 px-0">
+                        <h5 class="text-uppercase font-weight-bold">Support</h5>
+                        <ul class="list-unstyled mt-4">
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">Contact Us</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">Careers</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">FAQ</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">Help center</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-2 px-0">
+                        <h5 class="text-uppercase font-weight-bold">Company</h5>
+                        <ul class="list-unstyled mt-4">
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">About Us</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">What's New</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">Latest Product</a>
+                            </li>
+                            <li class="mt-3">
+                                <a href="#!" class="text-decoration-none">Dashboard</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="row">
+                            <h5 class="text-uppercase font-weight-bold text-center">Products</h5>
+                            {% if butt|length == 1 %}
+                            {% for data in butt %}
+
+                            <div class="col-12">
+                                <ul class="list-unstyled mt-2">
+                                    {% for d in data.value %}
+                                    {% if d.url == None %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endfor %}
+                            
+                            {% elif butt|length == 2 %}
+                            <div class="col-6 px-2">
+                                <ul class="list-unstyled mt-2">
+                                    {% for d in data.value %}
+                                    {% if d.url == None %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            
+                            {% elif butt|length == 3 %}
+                            {% for data in butt %}
+                            <div class="col-4 px-1">
+                                <ul class="list-unstyled mt-2">
+                                    {% for d in data.value %}
+                                    {% if d.url == None %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endfor %}
+                            {% elif butt|length == 4 %}
+                            {% for data in butt %}
+                            <div class="col-3 px-1">
+                                <ul class="list-unstyled mt-2">
+                                    {% for d in data.value %}
+                                    {% if d.url == None %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'not_found'  %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% else %}
+                                    <li class="mt-2">
+                                        <a href="{% url 'product' d.id %}" class="text-decoration-none text-white">{{d.name}}
+                                            <span class="text-danger">
+                                                {% if d.isNew_flag %}
+                                                <sup>new</sup>
+                                                {% endif %}
+                                            </span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-lg-4 px-0 text-end">
+                        <div class="d-block mt-2 me-3">
+                            <img src="{% static 'adminapp/img/google.png' %}" class="googleApple" alt="googel play">
+                        </div>
+                        <div class="d-block mt-2 pt-1 me-3">
+                            <img src="{% static 'adminapp/img/apple.png' %}" class="googleApple" alt="googel play">
+                        </div>
+                        <div class="d-block me-3">
+                            <i class="fa fa-facebook-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                            <i class="fa fa-instagram bg-transparent border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                            <i class="fa fa-twitter-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                            <i class="fa fa-linkedin-square border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                            <i class="fa fa-google bg-transparent border-0 footer_icon_size m-0 p-3" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+        
+            <div class="d-flex opacity-50 legal_footer_border pt-1">
+                <a href="#" class="text-decoration-none ms-3">Terms</a>
+                <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Policies</a>
+                <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Report Vulnerability</a>
+                <a href="#" class="text-decoration-none">&nbsp;.&nbsp;Newsletter</a>
+                <div class="ms-auto pe-3 h-inherit" id="copyright_year"></div>
+            </div>
+        </footer> {% endcomment %}
+    <!-- Footer -->
+    {% block SCRIPTLINK %}
+    {% endblock %}
+    <script type="text/javascript">
+        
+        {% block SCRIPT %}
+        {% endblock %}
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "210px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <!-- <script>
+        window.onscroll = function() {myFunction()};
+
+        // Get the navbar
+        var navbar = document.getElementById("navbar");
+
+        // Get the offset position of the navbar
+        var sticky = navbar.offsetTop;
+
+        // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+        function myFunction() {
+        if (window.pageYOffset >= sticky) {
+            navbar.classList.add("sticky")
+        } else {
+            navbar.classList.remove("sticky");
+        }
+        }
+    </script> -->
+    
+    <script>
+        // on page load get current year
+        var currentYear = (new Date).getFullYear();
+        // add current year to footer
+        currentYear = "Copyright © " + currentYear + " Waqoor.";
+        document.getElementById("copyright_year").innerHTML = currentYear;
+    </script>
+
+
+</body>
+
+</html>

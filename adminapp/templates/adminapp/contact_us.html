@@ -1,0 +1,186 @@
+{% extends 'adminapp/header.html' %}
+{% load static %}
+{% block TITLE %} Edit User {% endblock %}
+{% block content %}
+<div class="card" style="width:100%;background:#efede1;border-bottom: 1px solid red; box-shadow: 0 1px 6px #080808;"> 
+  
+    <div class="card-body">
+      <h5 class="card-title">Contact Us Form</h5> 
+        <form method="POST" enctype="multipart/form-data" autocomplete="off">
+        {% csrf_token %}
+          <div class="row">
+            <div class="col-sm-6">
+              <!-- first column -->
+              <div class="form-group">
+                {{ lead_form.name.label_tag }}
+                {{ lead_form.name }}
+                {{ lead_form.name.errors }}
+              </div>
+              <div class="form-group">
+                {{ lead_form.similar_project.label_tag }}
+                {{ lead_form.similar_project }}
+                {{ lead_form.similar_project.errors }}
+              </div>
+              <div class="form-group">
+                {{ lead_form.main_major.label_tag }}
+                {{ lead_form.main_major }}
+                {{ lead_form.main_major.errors }}
+              </div>
+            </div>
+            <div class="col-sm-6">
+            <!-- second column -->
+                <div class="row">
+                    <div class="col-sm-5">        
+                        <div class="form-group">
+                          {{ lead_files.img.label_tag }}<br>
+                        <div class="upload-btn-wrapper">
+                        <button class="btn" style="background: #dc3545;color: white;">Upload</button>
+                        {{ lead_files.img }}
+                        </div>        
+                          {{ lead_files.img.errors }}
+                        </div>
+                        <div class="form-group">
+                          {{ lead_files.doc.label_tag }}<br>
+                        <div class="upload-btn-wrapper">
+                        <button class="btn" style="background: #dc3545;color: white;">Upload</button>
+                        <div id="files"></div>
+                        {{ lead_files.doc }}
+                        </div>        
+                          {{ lead_files.doc.errors }}
+                        </div>   
+                    </div> 
+                    <div class="col-sm-7">
+                      <img id="client_image" src="" width="100%" height="200" alt="upload image">
+                    </div> 
+                </div>      
+            </div><!--End of Second Column-->
+          </div> <!--End of row-->
+          <div class="form-group">
+              {{ lead_form.project_description.label_tag }}
+              {{ lead_form.project_description }}
+              {{ lead_form.project_description.errors }}
+          </div> 
+
+            <div style="width:100%">
+            <button type="submit" class="btn btn-danger float-right" style="width: 100px;padding: 5px;">Send</button>
+            </div> 
+            <div class="msg">
+            <p><b>We will contact you as soon as possible.Check your junk or spam folders for a message coming from success@gmail.com</b></p>  
+            </div>
+          
+        </form>
+    </div> <!--card body-->
+</div> <!--end card-->
+<br>
+<br>
+<div class="border" style="padding: 1.25rem;">
+<h5>Previous Request</h5>
+  {% for p in all_leads %} 
+
+  <div class="card d-block w-100" style="box-shadow: 0 1px 6px #080808;background:#EFEDE1">   
+        <div class="card-body">
+          <div class="row">
+              <div class="col-4">                 
+                <div id="project_primary_image" style="width: 100%; height:100%" class="card-img-top project_primary_image">  
+                                      
+                          <div  style="background: url('/media/{{p.Lead_file.img}}') no-repeat center; border-width: thin medium thick 5px; border-color: #696969;border: #ccc9c9; border-style: double;    width: 100%;  background-size: 100% auto;              
+                          height: 100%;background-size: 100% 100%;" >
+                          </div> 
+                    
+                </div>   
+              </div>
+              <div class="col-8">
+                  <div class="row">
+                      <div class="col px-md-6 noborder">
+                      <table class="table">
+                          <tr ><td ><b>Project Name</b></td><td>{{p.name}}</td></tr>
+                          <tr><td><b>Owner</b></td><td><div class="tags-input"><span class="tag">{{p.created_by}}</span></div></td></tr>
+                          <tr><td><b>Main Major</b></td>
+                          <td><div class="tags-input">
+                          {% load custom_tags %}
+                          {% with  p.main_major|split:',' as tags %}
+                            {% for tag in tags %}
+                              <span class="tag">{{ tag}}</span>
+                            {% endfor %}
+                          {% endwith %}
+                          </div>
+                          </td>                        
+                          </tr>
+                          
+                      </table>
+                      </div>
+                      <div class="col px-md-6">
+                          <table class="table">   
+                              <tr><td><b>State</b></td><td><div class="tags-input"><span class="tag">{{p.state}}</span></div></td></tr>  
+                                                   
+                          </table>   
+                          <h6 class="mt-2">Last Response</h6>
+                                <div class="card-body border mb-2 w-100" style="background: white;min-height: 100px;width:100%">
+                                {{ p.Project_response.last.response|safe}}
+                                </div>                                  
+                      </div>
+                      
+                  </div>
+                                
+                
+                
+              </div>
+                  
+                  
+                            
+          </div>
+
+      </div> 
+  </div>
+  <hr class="hr-dashed-custom">
+  {% endfor %}
+</div>
+{% include "adminapp/footer.html" %}
+
+{% endblock %}
+{% block CSSLINK %}
+<link rel="stylesheet" href={% static "adminapp/css/bootstrap.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/homepage.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/jquery.mCustomScrollbar.min.css" %}>
+<link rel="stylesheet" href={% static "adminapp/css/icon.css" %}>
+<link rel="stylesheet" href={% static "adminapp/jquery-ui-1.12.1/jquery-ui.min.css" %}> <!--date picker-->
+{% endblock %}
+
+{% block SCRIPTLINK %}
+
+<script type="text/javascript" src={% static "adminapp/js/jquery-3.2.1.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/popper.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/bootstrap.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery.mCustomScrollbar.concat.min.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/main.js" %}></script>
+<script type="text/javascript" src={% static "adminapp/js/jquery-ui.min.js" %}></script>
+
+{% endblock %}
+
+ {% block SCRIPT %} 
+/** Upload Image */
+$('#id_img').change(function (e) {
+  $('#client_image').attr('src', window.URL.createObjectURL(this.files[0]));
+ 
+});
+/** update file name */
+$('#id_doc').change(function (e) { 
+  console.log(this.files[0].name);
+  $('#files').html('<ul><li>'+this.files[0].name+'</li></ul>');
+});
+  {% endblock %}
+
+  {% block CSS %}
+  <style>
+img[src=""] {
+    display: none;
+}
+
+
+.msg {
+    
+    text-align: center;
+}
+</style>
+  {% endblock %}
+
